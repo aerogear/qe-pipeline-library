@@ -32,6 +32,8 @@ def call(Map params) {
                 tag: imageNameParts[3]
             ]
             retry(3) {
+                // A workaround for quay.io v3
+                // https://access.redhat.com/solutions/4600151
                 if (image.registry == "quay.io") {
                     withCredentials([string(credentialsId: "${bearerToken}", variable: 'REGISTRY_TOKEN')]) {
                         final String responseCode = sh (
